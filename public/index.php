@@ -2,9 +2,11 @@
 // Allow ALL
 
 // Include DB
-require ('../src/db.php');
 header("Access-Control-Allow-Origin:*");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, x-requested-with, Accept");
 
+require ('../src/db.php');
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -54,35 +56,22 @@ $app->get('/api/account/{id}', function (Request $request, Response $response, a
 
 // Post Request
 $app->post('/api/account/add', function (Request $request, Response $response, array $args) {
-    var_dump('HELLO WORLD!');
-    // var_dump($request->getParsedBody());
     $name       = $request->getParam('name');
     $email      = $request->getParam('email');
     $password   = $request->getParam('password');
     $username   = $request->getParam('username');
 
-    
-    try{
-        $db = new DataBase();
-        
-        $dbObject = $db->connectDB();
-        
-        $sth = $dbObject->prepare("INSERT INTO accounts ('name','email','password','user_name') VALUES (:name,:email,:password,:username)");
-        
-        $rs = $sth->execute(array(
-            ":name" => $name,
-            ":email"=> $email,
-            ":password"=> $password,
-            ":username"=> $username
-        ));
+    var_dump($name);
 
-    }catch(PDOException $e){
-        echo '{
-            "error":{
-                "text":'.$e->getMassage().'
-            }
-        }';
-    }
+    $db = new DataBase();
+    $dbObject = $db->connectDB();
+    $sth = $dbObject->prepare("INSERT INTO accounts (name,email,password,user_name) VALUES (:name,:email,:password,:username)");
+    $rs = $sth->execute(array(
+        ":name" => $name,
+        ":email"=> $email,
+        ":password"=> $password,
+        ":username"=> $username
+    ));
 });
 // Run APP
 $app->run();
