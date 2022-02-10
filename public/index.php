@@ -1,12 +1,13 @@
 <?php
 // Allow ALL
 
-// Include DB
 header("Access-Control-Allow-Origin:*");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, x-requested-with, Accept");
 
+// Include DB
 require ('../src/db.php');
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
